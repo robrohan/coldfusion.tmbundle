@@ -3,14 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>IsDefined(${1:"variable_name"})$0</string>
+	<string>#${1:trim}(form.$2)#</string>
+	<key>keyEquivalent</key>
+	<string>^F</string>
 	<key>name</key>
-	<string>isdefined</string>
+	<string>Form Variable</string>
 	<key>scope</key>
 	<string>text.html.cfm</string>
-	<key>tabTrigger</key>
-	<string>isdefined</string>
 	<key>uuid</key>
-	<string>30468398-BDF8-4221-B8C1-108D660B5462</string>
+	<string>0CA09D51-8DE8-48A0-A178-02D7D8285802</string>
 </dict>
 </plist>

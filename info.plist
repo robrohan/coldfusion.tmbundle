@@ -15,14 +15,17 @@
 	<dict>
 		<key>items</key>
 		<array>
+			<!-- CF Tags -->
 			<string>C8F9D7A6-D447-4C16-B566-BE46335B1067</string>
+			<!-- CF Functions -->
 			<string>1202B1E1-6A18-4C9E-AB30-70A0E046CDB7</string>
-			<!-- 
+			<string>------------------------------------</string>
+			<!-- second isdefined (not sure if we should keep this) -->
 			<string>59075941-A690-46FC-BFA6-58B81E1B18B0</string>
+			<!-- form variable -->
 			<string>0CA09D51-8DE8-48A0-A178-02D7D8285802</string>
+			<!-- url variable -->
 			<string>1519328F-1308-4DC8-9E71-2B7473F9080F</string>
-			<string>2DD711BA-8C2D-4AF4-85C2-C42733743D0A</string>
-			<string>5C998560-6284-4F59-A6F9-420962E130E2</string> -->
 		</array>
 		
 		<key>submenus</key>
@@ -96,7 +99,6 @@
 					<string>80B9754E-47ED-46D6-8BA5-80744B0FBE4B</string>
 					<string>9A1343CB-5E9E-45A2-8D21-B4959C412B6E</string>
 					<string>622A22FB-207B-4322-BC6C-C2B3D605AF00</string>
-					<string>59075941-A690-46FC-BFA6-58B81E1B18B0</string>
 					<string>4DD466D2-0B15-4E06-8446-5AFBFC8B4128</string>
 					<string>183709C1-9414-4A25-89FB-A0D9A7E59D27</string>
 					<string>35060F61-EF40-4046-BF12-1AB2748884A1</string>
@@ -160,8 +162,6 @@
 					<string>82B42D60-DC77-47AA-B433-14969E2A2CEB</string>
 					<string>DE1DB107-EC48-4128-B400-203B72AFD40F</string>
 					<string>2051A0AE-51E2-413F-9CCB-92826FCD5C99</string>
-					<string>0CA09D51-8DE8-48A0-A178-02D7D8285802</string>
-					<string>1519328F-1308-4DC8-9E71-2B7473F9080F</string>
 					<string>2DD711BA-8C2D-4AF4-85C2-C42733743D0A</string>
 					<string>5C998560-6284-4F59-A6F9-420962E130E2</string>
 					<string>5DBF4A9D-7C3E-4FAD-B6DE-16AB145F081B</string>
@@ -462,7 +462,6 @@
 				<key>items</key>
 				<array>
 					<string>97CAD6F7-0807-4EB4-876E-DA9E9C1CEC14</string>
-					<string>904C79F1-5730-4D8D-986A-0D71587B2C1F</string>
 					<string>862EDD04-D606-4EDB-8D01-425D8024CF1B</string>
 					<string>0AF4E3E4-8638-4EAD-B182-A4FE571E9974</string>
 					<string>38EB1CC2-4A1A-4C37-9D69-19D81129C5DC</string>
@@ -604,6 +603,10 @@
 	
 	<key>ordering</key>
 	<array>
+		<!-- Matching types ([##]), etc -->
+		<string>00D00AD7-3C05-46E0-B8B9-0F5CCAC04F57</string>
+		<!-- Coldfusion comment -->
+		<string>904C79F1-5730-4D8D-986A-0D71587B2C1F</string>
 	</array>
 	
 	<key>uuid</key>

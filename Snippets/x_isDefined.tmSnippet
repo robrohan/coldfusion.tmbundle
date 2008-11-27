@@ -3,14 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>#${1:trim}(form.$2)#</string>
+	<string>isDefined("$1")$2</string>
 	<key>keyEquivalent</key>
-	<string>^F</string>
+	<string>^I</string>
 	<key>name</key>
-	<string>form variable</string>
+	<string>IsDefined</string>
 	<key>scope</key>
 	<string>text.html.cfm</string>
 	<key>uuid</key>
-	<string>0CA09D51-8DE8-48A0-A178-02D7D8285802</string>
+	<string>59075941-A690-46FC-BFA6-58B81E1B18B0</string>
 </dict>
 </plist>
