@@ -29,9 +29,69 @@
 	<key>name</key>
 	<string>ColdFusion</string>
 	
-	<!-- CFOUTPUT -->
 	<key>patterns</key>
 	<array>
+		<!-- Bit of a Hack: Use Javascript to emulate cfscript -->
+		<!-- TODO: Put a bit more work into this -->
+		<dict>
+			<key>begin</key>
+			<string>(?:^\s+)?&lt;((?i:cfscript))\b(?![^&gt;]*/&gt;)</string>
+			
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.script.html</string>
+				</dict>
+			</dict>
+			
+			<key>end</key>
+			<string>(?&lt;=&lt;/(cfscript|CFSCRIPT))&gt;(?:\s*\n)?</string>
+			
+			<!-- for now just use JS for cfScript (mostly right) -->
+			<key>name</key>
+			<string>source.js.embedded.html</string>
+			
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tag-stuff</string>
+				</dict>
+				
+				<dict>
+					<key>begin</key>
+					<string>(?&lt;!&lt;/(?i:cfscript))&gt;</string>
+					
+					<key>end</key>
+					<string>&lt;/((?i:cfscript))</string>
+					
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>source.js</string>
+						</dict>
+						<dict>
+							<key>match</key>
+							<string>//.*?((?=&lt;/cfscript)|$\n?)</string>
+							<key>name</key>
+							<string>comment.line.double-slash.js</string>
+						</dict>
+						<dict>
+							<key>begin</key>
+							<string>/\*</string>
+							<key>end</key>
+							<string>\*/|(?=&lt;/cfscript)</string>
+							<key>name</key>
+							<string>comment.block.js</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		
 		<!-- CFOUTPUT -->
 		<dict>
 			<key>begin</key>
@@ -114,67 +174,6 @@
 						<dict>
 							<key>include</key>
 							<string>source.sql</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		
-		<!-- Bit of a Hack: Use Javascript to emulate cfscript -->
-		<!-- TODO: Put a bit more work into this -->
-		<dict>
-			<key>begin</key>
-			<string>(?:^\s+)?&lt;((?i:cfscript))\b(?![^&gt;]*/&gt;)</string>
-			
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.tag.cfscript.html</string>
-				</dict>
-			</dict>
-			
-			<key>end</key>
-			<string>(?&lt;=&lt;/(cfscript|CFSCRIPT))&gt;(?:\s*\n)?</string>
-			
-			<!-- for now just use JS for cfScript (mostly right) -->
-			<key>name</key>
-			<string>source.js.embedded.html</string>
-			
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#tag-stuff</string>
-				</dict>
-				
-				<dict>
-					<key>begin</key>
-					<string>(?&lt;!&lt;/(?i:cfscript))&gt;</string>
-					
-					<key>end</key>
-					<string>&lt;/((?i:cfscript))</string>
-					
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>match</key>
-							<string>//.*?((?=&lt;/cfscript)|$\n?)</string>
-							<key>name</key>
-							<string>comment.line.double-slash.js</string>
-						</dict>
-						<dict>
-							<key>begin</key>
-							<string>/\*</string>
-							<key>end</key>
-							<string>\*/|(?=&lt;/cfscript)</string>
-							<key>name</key>
-							<string>comment.block.js</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>source.js</string>
 						</dict>
 					</array>
 				</dict>
