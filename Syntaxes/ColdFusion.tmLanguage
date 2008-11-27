@@ -1,32 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" 
+	"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	
 	<key>fileTypes</key>
 	<array>
 		<string>cfm</string>
 		<string>cfml</string>
 		<string>cfc</string>
 	</array>
+	
 	<key>foldingStartMarker</key>
 	<string>(?x)
-		(&lt;(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent)\b.*?&gt;
+		(&lt;(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction)\b.*?&gt;
 		|&lt;!---(?!.*---\s*&gt;)
 		)</string>
+	
 	<key>foldingStopMarker</key>
 	<string>(?x)
-		(&lt;/(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent)&gt;
+		(&lt;/(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction)&gt;
 		|^(?!.*?&lt;!---).*?---\s*&gt;
 		)</string>
+	
 	<key>keyEquivalent</key>
-	<string>^~C</string>
+	<string>^~@c</string>
+	
 	<key>name</key>
 	<string>ColdFusion</string>
+	
+	<!-- CFOUTPUT -->
 	<key>patterns</key>
 	<array>
+		<!-- CFOUTPUT -->
 		<dict>
 			<key>begin</key>
 			<string>(?:^\s+)?&lt;((?i:cfoutput))\b(?![^&gt;]*/&gt;)</string>
+			
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -35,10 +45,13 @@
 					<string>entity.name.tag.cfoutput.cfm</string>
 				</dict>
 			</dict>
+			
 			<key>end</key>
 			<string>&lt;/((?i:cfoutput))&gt;(?:\s*\n)?</string>
+			
 			<key>name</key>
 			<string>meta.tag.cfoutput.cfm</string>
+			
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -62,9 +75,12 @@
 				</dict>
 			</array>
 		</dict>
+		
+		<!-- CFQUERY (SQL Embedded) -->
 		<dict>
 			<key>begin</key>
 			<string>(?:^\s+)?&lt;((?i:cfquery))\b(?![^&gt;]*/&gt;)</string>
+			
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -73,10 +89,13 @@
 					<string>entity.name.tag.cfquery.cfm</string>
 				</dict>
 			</dict>
+			
 			<key>end</key>
 			<string>&lt;/((?i:cfquery))&gt;(?:\s*\n)?</string>
+			
 			<key>name</key>
 			<string>meta.tag.cfquery.cfm</string>
+			
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -100,9 +119,73 @@
 				</dict>
 			</array>
 		</dict>
+		
+		<!-- Bit of a Hack: Use Javascript to emulate cfscript -->
+		<!-- TODO: Put a bit more work into this -->
+		<dict>
+			<key>begin</key>
+			<string>(?:^\s+)?&lt;((?i:cfscript))\b(?![^&gt;]*/&gt;)</string>
+			
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.cfscript.html</string>
+				</dict>
+			</dict>
+			
+			<key>end</key>
+			<string>(?&lt;=&lt;/(cfscript|CFSCRIPT))&gt;(?:\s*\n)?</string>
+			
+			<!-- for now just use JS for cfScript (mostly right) -->
+			<key>name</key>
+			<string>source.js.embedded.html</string>
+			
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tag-stuff</string>
+				</dict>
+				
+				<dict>
+					<key>begin</key>
+					<string>(?&lt;!&lt;/(?i:cfscript))&gt;</string>
+					
+					<key>end</key>
+					<string>&lt;/((?i:cfscript))</string>
+					
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>match</key>
+							<string>//.*?((?=&lt;/cfscript)|$\n?)</string>
+							<key>name</key>
+							<string>comment.line.double-slash.js</string>
+						</dict>
+						<dict>
+							<key>begin</key>
+							<string>/\*</string>
+							<key>end</key>
+							<string>\*/|(?=&lt;/cfscript)</string>
+							<key>name</key>
+							<string>comment.block.js</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>source.js</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		
+		<!-- Any ColdFusion tag -->
 		<dict>
 			<key>begin</key>
 			<string>&lt;/?((?i:cf)([a-zA-Z0-9]+))(?=[^&gt;]*&gt;)</string>
+			
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -111,10 +194,13 @@
 					<string>entity.name.tag.cfm</string>
 				</dict>
 			</dict>
+			
 			<key>end</key>
 			<string>&gt;</string>
+			
 			<key>name</key>
 			<string>meta.tag.any.cfm</string>
+			
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -123,25 +209,34 @@
 				</dict>
 			</array>
 		</dict>
+		
+		<!-- Coldfusion Comment -->
 		<dict>
 			<key>include</key>
 			<string>#coldfusion-comment</string>
 		</dict>
+		
+		<!-- Other Tags -->
 		<dict>
 			<key>include</key>
 			<string>text.html.basic</string>
 		</dict>
 	</array>
+	
+	<!-- Reused Partitions? -->
 	<key>repository</key>
 	<dict>
 		<key>coldfusion-comment</key>
 		<dict>
 			<key>begin</key>
 			<string>&lt;!---</string>
+			
 			<key>end</key>
 			<string>---&gt;</string>
+			
 			<key>name</key>
 			<string>comment.block.cfm</string>
+			
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -150,11 +245,13 @@
 				</dict>
 			</array>
 		</dict>
+		
 		<key>embedded-code</key>
 		<dict>
 			<key>patterns</key>
 			<array/>
 		</dict>
+		
 		<key>entities</key>
 		<dict>
 			<key>patterns</key>
@@ -173,14 +270,18 @@
 				</dict>
 			</array>
 		</dict>
+		
 		<key>string-double-quoted</key>
 		<dict>
 			<key>begin</key>
 			<string>"</string>
+			
 			<key>end</key>
 			<string>"</string>
+			
 			<key>name</key>
 			<string>string.quoted.double.cfm</string>
+			
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -193,14 +294,18 @@
 				</dict>
 			</array>
 		</dict>
+		
 		<key>string-single-quoted</key>
 		<dict>
 			<key>begin</key>
 			<string>'</string>
+			
 			<key>end</key>
 			<string>'</string>
+			
 			<key>name</key>
 			<string>string.quoted.single.cfm</string>
+			
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -213,17 +318,21 @@
 				</dict>
 			</array>
 		</dict>
+		
 		<key>tag-generic-attribute</key>
 		<dict>
 			<key>match</key>
 			<string>\b([a-zA-Z\-:]+)</string>
+			
 			<key>name</key>
 			<string>entity.other.attribute-name.cfm</string>
 		</dict>
+		
 		<key>tag-id-attribute</key>
 		<dict>
 			<key>begin</key>
 			<string>\b(id)\b\s*=</string>
+			
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -232,21 +341,28 @@
 					<string>entity.other.attribute-name.id.html</string>
 				</dict>
 			</dict>
+			
 			<key>end</key>
 			<string>(?&lt;='|")</string>
+			
 			<key>name</key>
 			<string>meta.attribute-with-value.id.cfm</string>
+			
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>begin</key>
 					<string>"</string>
+					
 					<key>contentName</key>
 					<string>meta.toc-list.id.cfm</string>
+					
 					<key>end</key>
 					<string>"</string>
+					
 					<key>name</key>
 					<string>string.quoted.double.cfm</string>
+					
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -282,6 +398,7 @@
 				</dict>
 			</array>
 		</dict>
+		
 		<key>tag-stuff</key>
 		<dict>
 			<key>patterns</key>
@@ -309,8 +426,10 @@
 			</array>
 		</dict>
 	</dict>
+	
 	<key>scopeName</key>
 	<string>text.html.cfm</string>
+	
 	<key>uuid</key>
 	<string>97CAD6F7-0807-4EB4-876E-DA9E9C1CEC14</string>
 </dict>
