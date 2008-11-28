@@ -1,42 +1,258 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" 
-	"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	
+	<key>bundleUUID</key>
+	<string>1A09BE0B-E81A-4CB7-AF69-AFC845162D1F</string>
 	<key>fileTypes</key>
 	<array>
 		<string>cfm</string>
 		<string>cfml</string>
 		<string>cfc</string>
 	</array>
-	
+	<key>firstLineMatch</key>
+	<string>&lt;!DOCTYPE|&lt;(?i:html)</string>
 	<key>foldingStartMarker</key>
-	<string>(?x)
-		(&lt;(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction)\b.*?&gt;
-		|&lt;!---(?!.*---\s*&gt;)
-		)</string>
-	
+	<string>(?x) 
+(&lt;(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script |ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction)\b.*?&gt; 
+        |&lt;!---(?!.*---\s*&gt;) 
+        )</string>
 	<key>foldingStopMarker</key>
-	<string>(?x)
-		(&lt;/(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction)&gt;
-		|^(?!.*?&lt;!---).*?---\s*&gt;
-		)</string>
-	
+	<string>(?x) 
+(&lt;/(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|scrip t|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction)&gt; 
+        |^(?!.*?&lt;!---).*?---\s*&gt; 
+        )</string>
 	<key>keyEquivalent</key>
 	<string>^~@c</string>
-	
 	<key>name</key>
 	<string>ColdFusion</string>
-	
 	<key>patterns</key>
 	<array>
-		<!-- Bit of a Hack: Use Javascript to emulate cfscript -->
-		<!-- TODO: Put a bit more work into this -->
 		<dict>
 			<key>begin</key>
-			<string>(?:^\s+)?&lt;((?i:cfscript))\b(?![^&gt;]*/&gt;)</string>
-			
+			<string>&lt;([a-zA-Z0-9:]+)(?=[^&gt;]*&gt;&lt;/\1&gt;)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.html</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>&gt;(&lt;)/(\1)&gt;</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>meta.scope.between-tag-pair.html</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.html</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>meta.tag.any.html</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tag-stuff</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>&lt;\?(xml)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.xml.html</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>\?&gt;</string>
+			<key>name</key>
+			<string>meta.tag.preprocessor.xml.html</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tag-generic-attribute</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#string-double-quoted</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#string-single-quoted</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>&lt;!---</string>
+			<key>end</key>
+			<string>---\s*&gt;</string>
+			<key>name</key>
+			<string>comment.block.html</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>---</string>
+					<key>name</key>
+					<string>invalid.illegal.bad-comments-or-CDATA.html</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>&lt;!</string>
+			<key>end</key>
+			<string>&gt;</string>
+			<key>name</key>
+			<string>meta.tag.sgml.html</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(DOCTYPE)</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>entity.name.tag.doctype.html</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>(?=&gt;)</string>
+					<key>name</key>
+					<string>meta.tag.sgml.doctype.html</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>match</key>
+							<string>"[^"&gt;]*"</string>
+							<key>name</key>
+							<string>string.quoted.double.doctype.identifiers-and-DTDs.html</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>\[CDATA\[</string>
+					<key>end</key>
+					<string>]](?=&gt;)</string>
+					<key>name</key>
+					<string>constant.other.inline-data.html</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(\s*)(?!---|&gt;)\S(\s*)</string>
+					<key>name</key>
+					<string>invalid.illegal.bad-comments-or-CDATA.html</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#coldfusion-script</string>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#cffunction</string>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>(?:^\s+)?&lt;((?i:style))\b(?![^&gt;]*/&gt;)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.style.html</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>&lt;/((?i:style))&gt;(?:\s*\n)?</string>
+			<key>name</key>
+			<string>source.css.embedded.html</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tag-stuff</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>&gt;</string>
+					<key>end</key>
+					<string>(?=&lt;/(?i:style))</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#embedded-code</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>source.css</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>(?:^\s+)?&lt;((?i:cfquery))\b(?![^&gt;]*/&gt;)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.cfquery.html</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>&lt;/((?i:cfquery))&gt;(?:\s*\n)?</string>
+			<key>name</key>
+			<string>source.sql.embedded.html</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tag-stuff</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>&gt;</string>
+					<key>end</key>
+					<string>(?=&lt;/(?i:cfquery))</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#embedded-code</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>source.sql</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>(?:^\s+)?&lt;((?i:script))\b(?![^&gt;]*/&gt;)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -45,34 +261,73 @@
 					<string>entity.name.tag.script.html</string>
 				</dict>
 			</dict>
-			
 			<key>end</key>
-			<string>(?&lt;=&lt;/(cfscript|CFSCRIPT))&gt;(?:\s*\n)?</string>
-			
-			<!-- for now just use JS for cfScript (mostly right) -->
+			<string>(?&lt;=&lt;/(script|SCRIPT))&gt;(?:\s*\n)?</string>
 			<key>name</key>
 			<string>source.js.embedded.html</string>
-			
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>include</key>
 					<string>#tag-stuff</string>
 				</dict>
-				
 				<dict>
 					<key>begin</key>
-					<string>(?&lt;!&lt;/(?i:cfscript))&gt;</string>
-					
+					<string>(?&lt;!&lt;/(?:script|SCRIPT))&gt;</string>
 					<key>end</key>
-					<string>&lt;/((?i:cfscript))</string>
-					
+					<string>&lt;/((?i:script))</string>
 					<key>patterns</key>
 					<array>
+						<dict>
+							<key>match</key>
+							<string>//.*?((?=&lt;/script)|$\n?)</string>
+							<key>name</key>
+							<string>comment.line.double-slash.js</string>
+						</dict>
+						<dict>
+							<key>begin</key>
+							<string>/\*</string>
+							<key>end</key>
+							<string>\*/|(?=&lt;/script)</string>
+							<key>name</key>
+							<string>comment.block.js</string>
+						</dict>
 						<dict>
 							<key>include</key>
 							<string>source.js</string>
 						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>(?:^\s+)?&lt;((?i:cfscript))\b(?![^&gt;]*/&gt;)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.script.html</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(?&lt;=&lt;/(cfscript|CFSCRIPT))&gt;(?:\s*\n)?</string>
+			<key>name</key>
+			<string>source.js.embedded.html</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tag-stuff</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>(?&lt;!&lt;/(?:cfscript|CFSCRIPT))&gt;</string>
+					<key>end</key>
+					<string>&lt;/((?i:cfscript))</string>
+					<key>patterns</key>
+					<array>
 						<dict>
 							<key>match</key>
 							<string>//.*?((?=&lt;/cfscript)|$\n?)</string>
@@ -87,119 +342,29 @@
 							<key>name</key>
 							<string>comment.block.js</string>
 						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		
-		<!-- CFOUTPUT -->
-		<dict>
-			<key>begin</key>
-			<string>(?:^\s+)?&lt;((?i:cfoutput))\b(?![^&gt;]*/&gt;)</string>
-			
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.tag.cfoutput.cfm</string>
-				</dict>
-			</dict>
-			
-			<key>end</key>
-			<string>&lt;/((?i:cfoutput))&gt;(?:\s*\n)?</string>
-			
-			<key>name</key>
-			<string>meta.tag.cfoutput.cfm</string>
-			
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#tag-stuff</string>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>&gt;</string>
-					<key>contentName</key>
-					<string>meta.scope.output.cfm</string>
-					<key>end</key>
-					<string>(?=&lt;/(?i:cfoutput))</string>
-					<key>patterns</key>
-					<array>
 						<dict>
 							<key>include</key>
-							<string>$self</string>
+							<string>source.js</string>
 						</dict>
 					</array>
 				</dict>
 			</array>
 		</dict>
-		
-		<!-- CFQUERY (SQL Embedded) -->
 		<dict>
 			<key>begin</key>
-			<string>(?:^\s+)?&lt;((?i:cfquery))\b(?![^&gt;]*/&gt;)</string>
-			
+			<string>&lt;/?((?i:body|head|html)\b)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.tag.cfquery.cfm</string>
+					<string>entity.name.tag.structure.any.html</string>
 				</dict>
 			</dict>
-			
-			<key>end</key>
-			<string>&lt;/((?i:cfquery))&gt;(?:\s*\n)?</string>
-			
-			<key>name</key>
-			<string>meta.tag.cfquery.cfm</string>
-			
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#tag-stuff</string>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>(?&lt;=&gt;)</string>
-					<key>end</key>
-					<string>(?=&lt;/(?i:cfquery))</string>
-					<key>name</key>
-					<string>source.sql.embedded</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>source.sql</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		
-		<!-- Any ColdFusion tag -->
-		<dict>
-			<key>begin</key>
-			<string>&lt;/?((?i:cf)([a-zA-Z0-9]+))(?=[^&gt;]*&gt;)</string>
-			
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.tag.cfm</string>
-				</dict>
-			</dict>
-			
 			<key>end</key>
 			<string>&gt;</string>
-			
 			<key>name</key>
-			<string>meta.tag.any.cfm</string>
-			
+			<string>meta.tag.structure.any.html</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -208,49 +373,191 @@
 				</dict>
 			</array>
 		</dict>
-		
-		<!-- Coldfusion Comment -->
-		<dict>
-			<key>include</key>
-			<string>#coldfusion-comment</string>
-		</dict>
-		
-		<!-- Other Tags -->
-		<dict>
-			<key>include</key>
-			<string>text.html.basic</string>
-		</dict>
-	</array>
-	
-	<!-- Reused Partitions? -->
-	<key>repository</key>
-	<dict>
-		<key>coldfusion-comment</key>
 		<dict>
 			<key>begin</key>
-			<string>&lt;!---</string>
-			
+			<string>&lt;/?((?i:address|blockquote|dd|div|dl|dt|fieldset|form|frame|frameset|h1|h2 |h3|h4|h5|h6|iframe|noframes|object|ol|p|ul|applet|center|dir|hr|menu|pre)\ b)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.block.any.html</string>
+				</dict>
+			</dict>
 			<key>end</key>
-			<string>---&gt;</string>
-			
+			<string>&gt;</string>
 			<key>name</key>
-			<string>comment.block.cfm</string>
-			
+			<string>meta.tag.block.any.html</string>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#coldfusion-comment</string>
+					<string>#tag-stuff</string>
 				</dict>
 			</array>
 		</dict>
-		
+		<dict>
+			<key>begin</key>
+			<string>&lt;/?((?i:a|abbr|acronym|area|b|base|basefont|bdo|big|br|button|caption|cite |code|col|colgroup|del|dfn|em|font|head|html|i|img|input|ins|isindex|kbd|la bel|legend|li|link|map|meta|noscript|optgroup|option|param|q|s|samp|script| select|small|span|strike|strong|style|sub|sup|table|tbody|td|textarea|tfoot |th|thead|title|tr|tt|u|var)\b)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.inline.any.html</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>&gt;</string>
+			<key>name</key>
+			<string>meta.tag.inline.any.html</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tag-stuff</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>&lt;/?([a-zA-Z0-9:]+)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.other.html</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>&gt;</string>
+			<key>name</key>
+			<string>meta.tag.other.html</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#tag-stuff</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#entities</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>&lt;&gt;</string>
+			<key>name</key>
+			<string>invalid.illegal.incomplete.html</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>&lt;(?=\W)|&gt;</string>
+			<key>name</key>
+			<string>invalid.illegal.bad-angle-bracket.html</string>
+		</dict>
+	</array>
+	<key>repository</key>
+	<dict>
+		<key>cffunction</key>
+		<dict>
+			<key>begin</key>
+			<string>&lt;(cffunction)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.tag.cfml</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>&gt;</string>
+			<key>name</key>
+			<string>meta.tag.language.cfml.function</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>string.quoted.double.cfml</string>
+						</dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.string.begin</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>entity.name.function.cfml</string>
+						</dict>
+						<key>3</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.string.end</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>(?&lt;=name=)(")([A-Za-z$_0-9]+)(")</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>source.cfml</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#tag-stuff</string>
+				</dict>
+			</array>
+		</dict>
+		<key>coldfusion-script</key>
+		<dict>
+			<key>begin</key>
+			<string>#</string>
+			<key>end</key>
+			<string>\#</string>
+			<key>name</key>
+			<string>source.coldfusion.embedded.html</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#embedded-code</string>
+				</dict>
+			</array>
+		</dict>
 		<key>embedded-code</key>
 		<dict>
 			<key>patterns</key>
-			<array/>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#php</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#ruby</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#smarty</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#python</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#javascript</string>
+				</dict>
+			</array>
 		</dict>
-		
 		<key>entities</key>
 		<dict>
 			<key>patterns</key>
@@ -269,18 +576,14 @@
 				</dict>
 			</array>
 		</dict>
-		
 		<key>string-double-quoted</key>
 		<dict>
 			<key>begin</key>
 			<string>"</string>
-			
 			<key>end</key>
 			<string>"</string>
-			
 			<key>name</key>
-			<string>string.quoted.double.cfm</string>
-			
+			<string>string.quoted.double.html</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -293,18 +596,14 @@
 				</dict>
 			</array>
 		</dict>
-		
 		<key>string-single-quoted</key>
 		<dict>
 			<key>begin</key>
 			<string>'</string>
-			
 			<key>end</key>
 			<string>'</string>
-			
 			<key>name</key>
-			<string>string.quoted.single.cfm</string>
-			
+			<string>string.quoted.single.html</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -317,21 +616,17 @@
 				</dict>
 			</array>
 		</dict>
-		
 		<key>tag-generic-attribute</key>
 		<dict>
 			<key>match</key>
 			<string>\b([a-zA-Z\-:]+)</string>
-			
 			<key>name</key>
-			<string>entity.other.attribute-name.cfm</string>
+			<string>entity.other.attribute-name.html</string>
 		</dict>
-		
 		<key>tag-id-attribute</key>
 		<dict>
 			<key>begin</key>
 			<string>\b(id)\b\s*=</string>
-			
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -340,28 +635,21 @@
 					<string>entity.other.attribute-name.id.html</string>
 				</dict>
 			</dict>
-			
 			<key>end</key>
 			<string>(?&lt;='|")</string>
-			
 			<key>name</key>
-			<string>meta.attribute-with-value.id.cfm</string>
-			
+			<string>meta.attribute-with-value.id.html</string>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>begin</key>
 					<string>"</string>
-					
 					<key>contentName</key>
-					<string>meta.toc-list.id.cfm</string>
-					
+					<string>meta.toc-list.id.html</string>
 					<key>end</key>
 					<string>"</string>
-					
 					<key>name</key>
-					<string>string.quoted.double.cfm</string>
-					
+					<string>string.quoted.double.html</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -378,11 +666,11 @@
 					<key>begin</key>
 					<string>'</string>
 					<key>contentName</key>
-					<string>meta.toc-list.id.cfm</string>
+					<string>meta.toc-list.id.html</string>
 					<key>end</key>
 					<string>'</string>
 					<key>name</key>
-					<string>string.quoted.single.cfm</string>
+					<string>string.quoted.single.html</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -397,7 +685,6 @@
 				</dict>
 			</array>
 		</dict>
-		
 		<key>tag-stuff</key>
 		<dict>
 			<key>patterns</key>
@@ -420,15 +707,58 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#coldfusion-script</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#embedded-code</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>.var\s</string>
+					<key>name</key>
+					<string>variable.other</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>.&lt;cffunction\sname=('|")1</string>
+					<key>contentName</key>
+					<string>entity.name.function</string>
+					<key>end</key>
+					<string>'|"1</string>
+					<key>name</key>
+					<string>meta.tag.other</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>[^\#"'][a-zA-Z0-9\.]*.\(</string>
+					<key>contentName</key>
+					<string>support.function</string>
+					<key>end</key>
+					<string>\)+</string>
+					<key>name</key>
+					<string>support.function</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>match</key>
+							<string>("|')[^\.].+("|')</string>
+							<key>name</key>
+							<string>string</string>
+						</dict>
+						<dict>
+							<key>match</key>
+							<string>,</string>
+							<key>name</key>
+							<string>meta.tag</string>
+						</dict>
+					</array>
 				</dict>
 			</array>
 		</dict>
 	</dict>
-	
 	<key>scopeName</key>
 	<string>text.html.cfm</string>
-	
 	<key>uuid</key>
 	<string>97CAD6F7-0807-4EB4-876E-DA9E9C1CEC14</string>
 </dict>

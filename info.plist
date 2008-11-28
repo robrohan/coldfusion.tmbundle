@@ -1,33 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>contactEmailRot13</key>
 	<string>ebo@qnrzba.pbz.nh</string>
-	
 	<key>contactName</key>
 	<string>Rob Rohan</string>
-	
 	<key>description</key>
 	<string>Support for the ColdFusion web development environment.</string>
-	
 	<key>mainMenu</key>
 	<dict>
 		<key>items</key>
 		<array>
-			<!-- CF Tags -->
 			<string>C8F9D7A6-D447-4C16-B566-BE46335B1067</string>
-			<!-- CF Functions -->
 			<string>1202B1E1-6A18-4C9E-AB30-70A0E046CDB7</string>
 			<string>------------------------------------</string>
-			<!-- second isdefined (not sure if we should keep this) -->
 			<string>59075941-A690-46FC-BFA6-58B81E1B18B0</string>
-			<!-- form variable -->
 			<string>0CA09D51-8DE8-48A0-A178-02D7D8285802</string>
-			<!-- url variable -->
 			<string>1519328F-1308-4DC8-9E71-2B7473F9080F</string>
 		</array>
-		
 		<key>submenus</key>
 		<dict>
 			<key>1202B1E1-6A18-4C9E-AB30-70A0E046CDB7</key>
@@ -452,11 +443,9 @@
 					<string>0A58EA58-3BBC-4A07-80FF-366933CF24A7</string>
 					<string>B00CB7C5-C864-493C-9C6E-DCF759CE3B6A</string>
 				</array>
-				
 				<key>name</key>
 				<string>ColdFusion Functions</string>
 			</dict>
-			
 			<key>C8F9D7A6-D447-4C16-B566-BE46335B1067</key>
 			<dict>
 				<key>items</key>
@@ -597,18 +586,13 @@
 			</dict>
 		</dict>
 	</dict>
-	
 	<key>name</key>
 	<string>ColdFusion</string>
-	
 	<key>ordering</key>
 	<array>
-		<!-- Matching types ([##]), etc -->
 		<string>00D00AD7-3C05-46E0-B8B9-0F5CCAC04F57</string>
-		<!-- Coldfusion comment -->
 		<string>904C79F1-5730-4D8D-986A-0D71587B2C1F</string>
 	</array>
-	
 	<key>uuid</key>
 	<string>1A09BE0B-E81A-4CB7-AF69-AFC845162D1F</string>
 </dict>
