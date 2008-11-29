@@ -11,35 +11,82 @@
 	version="2.0"
 	exclude-result-prefixes="xsl dic util">
 	
-	<xsl:output method="xml"/>
+	<xsl:output method="xml" indent="yes" />
 	<xsl:output method="xml" indent="yes" name="plistxml" 
 		exclude-result-prefixes="xsl dic util" />
 	
-	<xsl:variable name="bundle-dir" select="'ColdFusion.bun'" />
+	<!-- <xsl:param name="bundle-dir" select="'ColdFusion.bun'" /> -->
+	
 	<xsl:variable name="NL">
 		<xsl:text>
 </xsl:text>
 	</xsl:variable>
 	
 	<xsl:template match="/">
-		<xsl:value-of select="$NL" />
-		<xsl:comment>TAGS</xsl:comment>
-		<xsl:value-of select="$NL" />
-		<xsl:comment><xsl:value-of select="'============================='" /></xsl:comment>
-		<xsl:value-of select="$NL" />
-		<xsl:apply-templates select="/dic:dictionary/dic:tags/dic:tag" />
-		<xsl:comment><xsl:value-of select="'============================='" /></xsl:comment>
-		<xsl:value-of select="$NL" />
-		
-		
-		<xsl:value-of select="$NL" />
-		<xsl:comment>FUNCTIONS</xsl:comment>
-		<xsl:value-of select="$NL" />
-		<xsl:comment><xsl:value-of select="'============================='" /></xsl:comment>
-		<xsl:value-of select="$NL" />
-		<xsl:apply-templates select="/dic:dictionary/dic:functions/dic:function" />
-		<xsl:comment><xsl:value-of select="'============================='" /></xsl:comment>
-		<xsl:value-of select="$NL" />
+		<!--
+		<?xml version="1.0" encoding="UTF-8"?>
+		<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"> -->
+		<plist version="1.0">
+		<dict>
+			<key>contactEmailRot13</key>
+			<string>ebo@qnrzba.pbz.nh</string>
+
+			<key>contactName</key>
+			<string>Rob Rohan</string>
+
+			<key>description</key>
+			<string>Support for the ColdFusion web development environment.</string>
+
+			<key>mainMenu</key>
+			<dict>
+				<key>items</key>
+				<array>
+					<string>C8F9D7A6-D447-4C16-B566-BE46335B1067</string>
+					<string>1202B1E1-6A18-4C9E-AB30-70A0E046CDB7</string>
+					<string>------------------------------------</string>
+					<string>59075941-A690-46FC-BFA6-58B81E1B18B0</string>
+					<string>0CA09D51-8DE8-48A0-A178-02D7D8285802</string>
+					<string>1519328F-1308-4DC8-9E71-2B7473F9080F</string>
+				</array>
+				
+				<key>submenus</key>
+				<dict>
+					<key>1202B1E1-6A18-4C9E-AB30-70A0E046CDB7</key>
+					<dict>
+						<key>items</key>
+						<array>
+							<xsl:comment>FUNCTIONS</xsl:comment><xsl:value-of select="$NL" />
+							<xsl:apply-templates select="/dic:dictionary/dic:functions/dic:function" />
+						</array>
+						<key>name</key>
+						<string>ColdFusion Functions</string>
+					</dict>
+					<key>C8F9D7A6-D447-4C16-B566-BE46335B1067</key>
+					<dict>
+						<key>items</key>
+						<array>
+							<xsl:comment>TAGS</xsl:comment><xsl:value-of select="$NL" />
+							<xsl:apply-templates select="/dic:dictionary/dic:tags/dic:tag" />
+						</array>
+						<key>name</key>
+						<string>ColdFusion Tags</string>
+					</dict>
+				</dict>
+			</dict>
+			
+			<key>name</key>
+			<string>ColdFusion</string>
+			
+			<key>ordering</key>
+			<array>
+				<!-- <string>00D00AD7-3C05-46E0-B8B9-0F5CCAC04F57</string>
+				<string>904C79F1-5730-4D8D-986A-0D71587B2C1F</string> -->
+			</array>
+
+			<key>uuid</key>
+			<string>1A09BE0B-E81A-4CB7-AF69-AFC845162D1F</string>
+		</dict>
+		</plist>
 	</xsl:template>
 	
 	<!-- Formats the functions. Writes the plist too. -->
@@ -50,8 +97,9 @@
 		<string><xsl:value-of select="util:toString($uid)"/></string>
 		<xsl:value-of select="$NL" />
 		
+		<!-- {$bundle-dir}/ -->
 		<xsl:result-document 
-			href="{$bundle-dir}/Snippets/gen-{$filename}.tmSnippet" format="plistxml">
+			href="Snippets/gen-{$filename}.tmSnippet" format="plistxml">
 			<!-- <xsl:text><!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"></xsl:text> -->
 			<plist version="1.0">
 			<dict>
@@ -92,8 +140,9 @@
 		<string><xsl:value-of select="util:toString($uid)"/></string>
 		<xsl:value-of select="$NL" />
 		
+		<!-- {$bundle-dir}/ -->
 		<xsl:result-document 
-			href="{$bundle-dir}/Snippets/gen-{$filename}.tmSnippet" format="plistxml">
+			href="Snippets/gen-{$filename}.tmSnippet" format="plistxml">
 			<!-- <xsl:text><!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"></xsl:text> -->
 			<plist version="1.0">
 			<dict>
@@ -129,7 +178,16 @@
 				<string>text.html.cfm</string>
 				
 				<key>tabTrigger</key>
-				<string><xsl:value-of select="substring-before(@name,':')"/></string>
+				<string>
+					<xsl:choose>
+						<xsl:when test="contains(@name,':')">
+							<xsl:value-of select="substring-before(@name,':')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="@name" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</string>
 				
 				<key>uuid</key>
 				<string><xsl:value-of select="util:toString($uid)"/></string>

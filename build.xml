@@ -11,16 +11,20 @@
 	<property name="output.bundle" value="ColdFusion.tmbundle" />
 	
 	<target name="clean">
-		<delete verbose="true">
+		<delete dir="${output.bundle}" />
+		<!-- <delete verbose="true">
 			<fileset dir="./${base.bundle}/Snippets" 
 				includes="**/gen-*.tmSnippet" />
-		</delete>
+		</delete> -->
 	</target>
 	
 	<target name="createSnippets">
+		<!-- <mkdir dir="${output.bundle}" /> -->
 		<java jar="${saxon.path}" fork="true">
+			<arg value="-o:${output.bundle}/info.plist" />
 			<arg value="${dictionary.file}" />
 			<arg value="${xsl.file}" />
+			<!-- <arg value="bundle-dir=''" /> -->
 		</java>
 	</target>
 	
@@ -31,7 +35,7 @@
 	</target>
 	
 	<target name="build">
-		<antcall target="createSnippets" />
 		<antcall target="createBundle" />
+		<antcall target="createSnippets" />
 	</target>
 </project>
