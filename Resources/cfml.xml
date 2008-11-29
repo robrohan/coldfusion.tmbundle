@@ -14729,7 +14729,7 @@
 		<!--
 			Numeric Month(date)
 		-->
-		<function  name="writeoutput" returns="Numeric">
+		<function  name="month" returns="Numeric">
 			<help><![CDATA[
 				Extracts the month value from a date/time object
 			]]></help>
@@ -14790,7 +14790,7 @@
 <!--
 			Numeric Month(date)
 		-->
-		<function  name="month" returns="Numeric">
+		<!-- <function  name="month" returns="Numeric">
 			<help><![CDATA[
 				Extracts the month value from a date/time object.
 			]]></help>
@@ -14801,7 +14801,7 @@
 					<value option="Now()" />
 				</values>
 			</parameter>
-		</function>
+		</function> -->
 		<!--
 			String ParagraphFormat(string)
 		-->
@@ -16208,7 +16208,7 @@
 		<!--
 			Binary ToScript(cfvar, javascriptvar, outputformat, ASFormat)
 		-->
-		<function creator="1" name="tobinary" returns="Binary">
+		<function creator="1" name="toscript" returns="Binary">
 			<help><![CDATA[
 				Creates a JavaScript or ActionScript expression that
 				assigns the value of a ColdFusion variable to a JavaScript

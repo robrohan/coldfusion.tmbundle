@@ -4,40 +4,62 @@
 	
 	<!-- Probably wont need to change this unless you are going to try to use
 		a different cfeclipse dictionary file. -->
-	<property name="dictionary.file" value="Resources/cf8.xml" />
-	<property name="xsl.file" value="dictToBundle.xsl" />
-	
-	<property name="base.bundle" value="ColdFusion.bun" />
-	<property name="output.bundle" value="ColdFusion.tmbundle" />
+	<property name="dictionary.file" value="Resources/cfml.xml" />
+	<property name="output.name" value="ColdFusion" />
+	<property name="output.bundle" value="${output.name}.tmbundle" />
 	
 	<property name="bundle.uuid" value="1A09BE0B-E81A-4CB7-AF69-AFC845162D1F" />
+	<property name="snytax.uuid" value="97CAD6F7-0807-4EB4-876E-DA9E9C1CEC14" />
+	<property name="cmddoc.uuid" value="9902B0A3-0523-4190-B541-374AC09CC72F" />
+	
+	<property name="xsl.file" value="dictToBundle.xsl" />
+	<property name="doc.xsl.file" value="dictToAPI.xsl" />
+	<property name="base.bundle" value="ColdFusion.bun" />
 	
 	<target name="clean">
-		<delete dir="${output.bundle}" />
-		<!-- <delete verbose="true">
-			<fileset dir="./${base.bundle}/Snippets" 
-				includes="**/gen-*.tmSnippet" />
-		</delete> -->
+		<delete dir="build/${output.bundle}" />
+	</target>
+	
+	<target name="superclean">
+		<delete dir="build" />
 	</target>
 	
 	<target name="createSnippets">
-		<!-- <mkdir dir="${output.bundle}" /> -->
 		<java jar="${saxon.path}" fork="true">
-			<arg value="-o:${output.bundle}/info.plist" />
+			<arg value="-o:build/${output.bundle}/info.plist" />
 			<arg value="${dictionary.file}" />
 			<arg value="${xsl.file}" />
 			<arg value="bundle-uuid=${bundle.uuid}" />
+			<arg value="bundle-name=${output.name}" />
+		</java>
+	</target>
+	
+	<target name="createAPIDoc">
+		<java jar="${saxon.path}" fork="true">
+			<arg value="-o:doc/${output.name}.html" />
+			<arg value="${dictionary.file}" />
+			<arg value="${doc.xsl.file}" />
+			<!-- <arg value="bundle-uuid=${bundle.uuid}" />
+			<arg value="bundle-name=${output.name}" /> -->
 		</java>
 	</target>
 	
 	<target name="createBundle">
-		<copy todir="${output.bundle}">
+		<copy todir="build/${output.bundle}">
 			<fileset dir="${base.bundle}"/>
+			<filterset>
+				<filter token="BUNDLE_NAME" value="${output.name}"/>
+				<filter token="BUNDLE_UUID" value="${bundle.uuid}"/>
+				<filter token="SYNTAX_UUID" value="${syntax.uuid}"/>
+				<filter token="CMDDOC_UUID" value="${cmddoc.uuid}"/>
+			</filterset>
 		</copy>
 	</target>
 	
 	<target name="build">
+		<mkdir dir="build" />
 		<antcall target="createBundle" />
 		<antcall target="createSnippets" />
+		<antcall target="createAPIDoc" />
 	</target>
 </project>

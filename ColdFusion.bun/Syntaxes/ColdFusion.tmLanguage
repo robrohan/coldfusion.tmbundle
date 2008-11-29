@@ -3,15 +3,18 @@
 <plist version="1.0">
 	<dict>
 		<key>bundleUUID</key>
-		<string>1A09BE0B-E81A-4CB7-AF69-AFC845162D1F</string>
+		<string>@BUNDLE_UUID@</string>
+		
 		<key>fileTypes</key>
 		<array>
 			<string>cfm</string>
 			<string>cfml</string>
 			<string>cfc</string>
 		</array>
+		
 		<key>firstLineMatch</key>
 		<string>&lt;!DOCTYPE|&lt;(?i:html)</string>
+		
 		<key>foldingStartMarker</key>
 		<string>(?x) 
 (&lt;(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script |ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction)\b.*?&gt; 
@@ -22,11 +25,13 @@
 (&lt;/(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|scrip t|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction)&gt; 
         |^(?!.*?&lt;!---).*?---\s*&gt; 
         )</string>
+		
 		<key>keyEquivalent</key>
 		<string>^~@c</string>
-		<key>name</key>
 		
-		<string>ColdFusion</string>
+		<key>name</key>
+		<string>@BUNDLE_NAME@</string>
+		
 		<key>patterns</key>
 		<array>
 			<dict>
@@ -485,44 +490,12 @@
 				
 				<key>patterns</key>
 				<array>
-					<!-- <dict>
-						<key>captures</key>
-						<dict>
-							<key>0</key>
-							<dict>
-								<key>name</key>
-								<string>string.quoted.double.cfml</string>
-							</dict>
-							
-							<key>1</key>
-							<dict>
-								<key>name</key>
-								<string>punctuation.definition.string.begin</string>
-							</dict>
-							
-							<key>2</key>
-							<dict>
-								<key>name</key>
-								<string>entity.name.function.cfml</string>
-							</dict>
-							
-							<key>3</key>
-							<dict>
-								<key>name</key>
-								<string>punctuation.definition.string.end</string>
-							</dict>
-						</dict>
-						<key>match</key>
-						<string>(?&lt;=name=)(")([A-Za-z$_0-9]+)(")</string>
-					</dict> -->
-					
 					<dict>
 						<key>captures</key>
 						<dict>
 							<key>0</key>
 							<dict>
 								<key>name</key>
-								<!-- <string>string.quoted.double.cfml</string> -->
 								<string>meta.tag.language.cfml.function</string>
 							</dict>
 							
@@ -812,6 +785,6 @@
 		<string>text.html.cfm</string>
 		
 		<key>uuid</key>
-		<string>97CAD6F7-0807-4EB4-876E-DA9E9C1CEC14</string>
+		<string>@SYNTAX_UUID@</string>
 	</dict>
 </plist>

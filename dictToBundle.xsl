@@ -19,6 +19,7 @@
 	
 	<!-- The uuid that will be set in the plist file.  I think this needs to be unique per bundle -->
 	<xsl:param name="bundle-uuid" select="'1A09BE0B-E81A-4CB7-AF69-AFC845162D1F'" />
+	<xsl:param name="bundle-name" select="'ColdFusion'" />
 	
 	<xsl:variable name="NL">
 		<xsl:text>
@@ -78,7 +79,7 @@
 			</dict>
 			
 			<key>name</key>
-			<string>ColdFusion</string>
+			<string><xsl:value-of select="$bundle-name" /></string>
 			
 			<key>ordering</key>
 			<array>
