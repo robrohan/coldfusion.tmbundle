@@ -1,0 +1,37 @@
+<project name="ColdFusion Textmate Bundle">
+	<!-- The xslt process needs an XSLT 2.0 processor, so I am using Saxon-->
+	<property name="saxon.path" value="/Applications/saxonb9-0-0-4j/saxon9.jar" />
+	
+	<!-- Probably wont need to change this unless you are going to try to use
+		a different cfeclipse dictionary file. -->
+	<property name="dictionary.file" value="Resources/cf8.xml" />
+	<property name="xsl.file" value="dictToBundle.xsl" />
+	
+	<property name="base.bundle" value="ColdFusion.bun" />
+	<property name="output.bundle" value="ColdFusion.tmbundle" />
+	
+	<target name="clean">
+		<delete verbose="true">
+			<fileset dir="./${base.bundle}/Snippets" 
+				includes="**/gen-*.tmSnippet" />
+		</delete>
+	</target>
+	
+	<target name="createSnippets">
+		<java jar="${saxon.path}" fork="true">
+			<arg value="${dictionary.file}" />
+			<arg value="${xsl.file}" />
+		</java>
+	</target>
+	
+	<target name="createBundle">
+		<copy todir="${output.bundle}">
+			<fileset dir="${base.bundle}"/>
+		</copy>
+	</target>
+	
+	<target name="build">
+		<antcall target="createSnippets" />
+		<antcall target="createBundle" />
+	</target>
+</project>
