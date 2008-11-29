@@ -17,15 +17,18 @@
 	
 	<!-- <xsl:param name="bundle-dir" select="'ColdFusion.bun'" /> -->
 	
+	<!-- The uuid that will be set in the plist file.  I think this needs to be unique per bundle -->
+	<xsl:param name="bundle-uuid" select="'1A09BE0B-E81A-4CB7-AF69-AFC845162D1F'" />
+	
 	<xsl:variable name="NL">
 		<xsl:text>
 </xsl:text>
 	</xsl:variable>
+	<xsl:variable name="TAB">
+		<xsl:text>	</xsl:text>
+	</xsl:variable>
 	
 	<xsl:template match="/">
-		<!--
-		<?xml version="1.0" encoding="UTF-8"?>
-		<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"> -->
 		<plist version="1.0">
 		<dict>
 			<key>contactEmailRot13</key>
@@ -84,7 +87,7 @@
 			</array>
 
 			<key>uuid</key>
-			<string>1A09BE0B-E81A-4CB7-AF69-AFC845162D1F</string>
+			<string><xsl:value-of select="$bundle-uuid" /></string>
 		</dict>
 		</plist>
 	</xsl:template>
@@ -100,7 +103,6 @@
 		<!-- {$bundle-dir}/ -->
 		<xsl:result-document 
 			href="Snippets/gen-{$filename}.tmSnippet" format="plistxml">
-			<!-- <xsl:text><!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"></xsl:text> -->
 			<plist version="1.0">
 			<dict>
 				<key>content</key>
@@ -108,8 +110,10 @@
 					<xsl:text>(${1:</xsl:text>
 					<xsl:for-each select="./dic:parameter">
 						<xsl:call-template name="param-with-placement">
-							<xsl:with-param name="placement" select="position()+position()" />
-							<xsl:with-param name="separator" select="', '" />
+							<xsl:with-param name="placement" select="position()+1" />
+							<xsl:with-param name="separator" select="''" />
+							<xsl:with-param name="preparator" select="', '" />
+							<xsl:with-param name="use-equals" select="'false'" />
 							<xsl:with-param name="total-param-count" select="count(../dic:parameter)" />
 						</xsl:call-template>
 					</xsl:for-each>
@@ -134,7 +138,6 @@
 	<!-- Formats the tags. Writes out the plist file too -->
 	<xsl:template match="dic:tag">
 		<xsl:variable name="filename" select="translate(@name,':','-')" /> 
-		<!-- <xsl:value-of select="$filename" /> -->
 		
 		<xsl:variable name="uid" select="util:randomUUID()"/>
 		<string><xsl:value-of select="util:toString($uid)"/></string>
@@ -143,7 +146,6 @@
 		<!-- {$bundle-dir}/ -->
 		<xsl:result-document 
 			href="Snippets/gen-{$filename}.tmSnippet" format="plistxml">
-			<!-- <xsl:text><!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"></xsl:text> -->
 			<plist version="1.0">
 			<dict>
 				<key>content</key>
@@ -154,6 +156,8 @@
 					<xsl:call-template name="param-with-placement">
 						<xsl:with-param name="placement" select="position()+position()" />
 						<xsl:with-param name="separator" select="' '" />
+						<xsl:with-param name="preparator" select="''" />
+						<xsl:with-param name="use-equals" select="'true'" />
 						<xsl:with-param name="total-param-count" select="count(../dic:parameter)" />
 						<!-- <xsl:with-param name="element" select="." /> -->
 					</xsl:call-template>
@@ -162,10 +166,15 @@
 
 				<xsl:choose>
 					<xsl:when test="@single = 'true'">
-						<xsl:text>/&gt;$0</xsl:text>
+						<xsl:text> /&gt;$0</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:text>&gt;$0&lt;</xsl:text>
+						<xsl:text>&gt;</xsl:text>
+						<xsl:value-of select="$NL" />
+						<xsl:value-of select="$TAB" />
+						<xsl:text>$0</xsl:text>
+						<xsl:value-of select="$NL" />
+						<xsl:text>&lt;</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text>&gt;</xsl:text>
 					</xsl:otherwise>
@@ -205,19 +214,63 @@
 	<xsl:template name="param-with-placement">
 		<xsl:param name="placement" />
 		<xsl:param name="separator" />
+		<xsl:param name="preparator" />
+		<xsl:param name="use-equals" />
 		<xsl:param name="total-param-count" />
 		
-		<xsl:text>$</xsl:text>
-		<xsl:text>{</xsl:text>
-		<xsl:value-of select="$placement" />
-		<xsl:text>:</xsl:text>
-		<xsl:value-of select="@name" /><xsl:text>="$</xsl:text>
-		<xsl:value-of select="$placement+1" />
-		<xsl:text>"</xsl:text>
-		<xsl:if test="position() != $total-param-count">
-			<xsl:value-of select="$separator" />
-		</xsl:if>
-		<xsl:text>}</xsl:text>
+		<xsl:choose>
+			<xsl:when test="$use-equals = 'true'">
+				<xsl:text>$</xsl:text>
+				<xsl:text>{</xsl:text>
+				<xsl:value-of select="$placement" />
+				<xsl:text>:</xsl:text>
+
+				<xsl:value-of select="$preparator" />
+				
+				<xsl:value-of select="@name" /><xsl:text>="$</xsl:text>
+				<xsl:value-of select="$placement+1" />
+				<xsl:text>"</xsl:text>
+				<xsl:if test="position() != $total-param-count">
+					<xsl:value-of select="$separator" />
+				</xsl:if>
+				<xsl:text>}</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:if test="@required = 'true'">
+					<xsl:if test="position() != 1">
+						<xsl:value-of select="$preparator" />
+					</xsl:if>
+					
+					<xsl:if test="@type = 'String'">
+						<xsl:text>"</xsl:text>
+					</xsl:if>
+				</xsl:if>
+				
+				<xsl:text>${</xsl:text>
+				<xsl:value-of select="$placement" />
+				<xsl:text>:</xsl:text>
+				
+				<xsl:if test="@required = 'false'">
+					<xsl:if test="position() != 1">
+						<xsl:value-of select="$preparator" />
+					</xsl:if>
+				</xsl:if>
+				<xsl:if test="@required = 'false'"><xsl:text>[</xsl:text></xsl:if>
+				<xsl:value-of select="@name" />
+				<xsl:if test="@required = 'false'"><xsl:text>]</xsl:text></xsl:if>
+				
+				<xsl:text>}</xsl:text>
+				
+				<xsl:if test="@required = 'true'">
+					<xsl:if test="@type = 'String'">
+						<xsl:text>"</xsl:text>
+					</xsl:if>
+				</xsl:if>
+				
+			</xsl:otherwise>
+		</xsl:choose>
+		
+		
 	</xsl:template>
 	
 	<xsl:template match="text()" />
