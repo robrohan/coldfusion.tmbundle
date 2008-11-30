@@ -3,6 +3,11 @@
 	dictToBundle
 	Created by Rob Rohan on 2008-11-22.
 	Copyright (c) 2008-2009 Rob Rohan. All rights reserved.
+	
+	The default output from this process is the info.plist file.  However, this also
+	generates the files for the tag completion and for the default snippets.
+	The snippets wind up in the Snippets directory and the tag and attribute lists wind
+	up in the Preferences folder.
 -->
 <xsl:stylesheet 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -16,10 +21,13 @@
 		exclude-result-prefixes="xsl dic util" />
 	
 	<!-- <xsl:param name="bundle-dir" select="'ColdFusion.bun'" /> -->
-	
-	<!-- The uuid that will be set in the plist file.  I think this needs to be unique per bundle -->
 	<xsl:param name="bundle-uuid" select="'1A09BE0B-E81A-4CB7-AF69-AFC845162D1F'" />
 	<xsl:param name="bundle-name" select="'ColdFusion'" />
+	
+	<xsl:param name="syntax-uuid" select="''" />
+	<xsl:param name="cmddoc-uuid" select="''" />
+	<xsl:param name="tagcomplete-uuid" select="''" />
+	<xsl:param name="attcomplete-uuid" select="''" />
 	
 	<xsl:variable name="NL">
 		<xsl:text>
@@ -29,6 +37,7 @@
 		<xsl:text>	</xsl:text>
 	</xsl:variable>
 	
+	<!-- writes out the plist, and kicks off the snippet writting -->
 	<xsl:template match="/">
 		<plist version="1.0">
 		<dict>
@@ -51,6 +60,13 @@
 					<string>59075941-A690-46FC-BFA6-58B81E1B18B0</string>
 					<string>0CA09D51-8DE8-48A0-A178-02D7D8285802</string>
 					<string>1519328F-1308-4DC8-9E71-2B7473F9080F</string>
+					<string><xsl:value-of select="$cmddoc-uuid" /></string>
+					<string><xsl:value-of select="$tagcomplete-uuid" /></string>
+					<string><xsl:value-of select="$attcomplete-uuid" /></string>
+					<!-- Now that we have written out the plist file and the snippets -->
+					<!-- fire off the bit that does the tag and attribute completion  -->
+					<xsl:call-template name="write-tag-completion-list" />
+					<xsl:call-template name="write-attribute-completion-list" />
 				</array>
 				
 				<key>submenus</key>
@@ -175,7 +191,7 @@
 						<xsl:value-of select="$TAB" />
 						<xsl:text>$0</xsl:text>
 						<xsl:value-of select="$NL" />
-						<xsl:text>&lt;</xsl:text>
+						<xsl:text>&lt;/</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text>&gt;</xsl:text>
 					</xsl:otherwise>
@@ -273,6 +289,119 @@
 		
 		
 	</xsl:template>
+	
+	<!-- make a list of tags in the format textmate expects for code completion -->
+	<xsl:template name="write-tag-completion-list">
+		<xsl:variable name="uid" select="util:randomUUID()"/>
+		<string><xsl:value-of select="util:toString($uid)"/></string>
+		
+		<xsl:result-document 
+			href="Preferences/Completion%20Tags.tmPreferences" format="plistxml">
+			<plist version="1.0">
+			<dict>
+				<key>name</key>
+				<string>Completions Tags</string>
+				
+				<key>scope</key>
+				<!-- text.html.cfm, invalid.illegal.incomplete.html -->
+				<string>text.html -(meta.tag | source), invalid.illegal.incomplete.html -source</string>
+				
+				<key>settings</key>
+				<dict>
+					<key>shellVariables</key>
+					<array>
+						<dict>
+							<key>name</key>
+							<string>TM_COMPLETION_split</string>
+							<key>value</key>
+							<string>,</string>
+						</dict>
+
+						<dict>
+							<key>name</key>
+							<string>TM_COMPLETIONS</string>
+							<key>value</key>
+							<string>
+								<xsl:for-each select="//dic:tag">
+									<xsl:value-of select="./@name" /><xsl:text>,</xsl:text>
+								</xsl:for-each>
+							</string>
+						</dict>
+					</array>
+				</dict>
+
+				<key>uuid</key>
+				<string><xsl:value-of select="util:toString($uid)"/></string>
+				<!-- <string><xsl:value-of select="$tagcomplete-uuid" /></string> -->
+			</dict>
+			</plist>
+		</xsl:result-document>
+	</xsl:template>
+	
+	<xsl:template name="write-attribute-completion-list">
+		<xsl:variable name="uid" select="util:randomUUID()"/>
+		<string><xsl:value-of select="util:toString($uid)"/></string>
+		
+		<xsl:result-document 
+			href="Preferences/Completion%20Attributes.tmPreferences" format="plistxml">
+			<plist version="1.0">
+			<dict>
+				<key>name</key>
+				<string>Completions Attributes</string>
+
+				<key>scope</key>
+				<!-- text.html meta.tag -(entity.other.attribute-name | punctuation.definition.tag.begin | source | entity.name.tag | string | invalid.illegal.incomplete.html)-->
+				<string>text.html.cfm meta.tag.other.html</string>
+
+				<key>settings</key>
+				<dict>
+					<key>completions</key>
+					<array>
+						<xsl:for-each select="//dic:tag">
+							<string><xsl:value-of select="@name" /></string>
+							<string><xsl:value-of select="translate(@name,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" /></string>
+						</xsl:for-each>
+					</array>
+					<key>disableDefaultCompletion</key>
+					<integer>1</integer>
+					<key>shellVariables</key>
+					<array>
+						<dict>
+							<key>name</key>
+							<string>TM_COMPLETION_split</string>
+							<key>value</key>
+							<string>,</string>
+						</dict>
+						<dict>
+							<key>name</key>
+							<string>TM_COMPLETION_scope</string>
+							<key>value</key>
+							<string>html_attributes</string>
+						</dict>
+						<dict>
+							<key>name</key>
+							<string>TM_COMPLETIONS</string>
+							<key>value</key>
+							<string>
+								<xsl:for-each select="//dic:tag/dic:parameter">
+									<xsl:text>&lt;</xsl:text>
+									<xsl:value-of select="../@name" /><xsl:text> </xsl:text>
+									<xsl:value-of select="./@name" />
+									<xsl:text>=&quot;&quot;</xsl:text>
+									<xsl:text>,</xsl:text>
+								</xsl:for-each>
+							</string>
+						</dict>
+					</array>
+				</dict>
+				
+				<key>uuid</key>
+				<string><xsl:value-of select="util:toString($uid)"/></string>
+			</dict>
+			</plist>
+		</xsl:result-document>
+	</xsl:template>
+	
 	
 	<xsl:template match="text()" />
 </xsl:stylesheet>

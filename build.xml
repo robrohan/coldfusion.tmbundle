@@ -11,6 +11,8 @@
 	<property name="bundle.uuid" value="1A09BE0B-E81A-4CB7-AF69-AFC845162D1F" />
 	<property name="snytax.uuid" value="97CAD6F7-0807-4EB4-876E-DA9E9C1CEC14" />
 	<property name="cmddoc.uuid" value="9902B0A3-0523-4190-B541-374AC09CC72F" />
+	<property name="tagcomplete.uuid" value="A51C20E9-244A-4E9B-8150-B3D55F6CA839" />
+	<property name="attcomplete.uuid" value="C6F3F140-863E-442D-8ECA-830C4002884E" />
 	
 	<property name="xsl.file" value="dictToBundle.xsl" />
 	<property name="doc.xsl.file" value="dictToAPI.xsl" />
@@ -31,6 +33,11 @@
 			<arg value="${xsl.file}" />
 			<arg value="bundle-uuid=${bundle.uuid}" />
 			<arg value="bundle-name=${output.name}" />
+			
+			<arg value="syntax-uuid=${snytax.uuid}" />
+			<arg value="cmddoc-uuid=${cmddoc.uuid}" />
+			<arg value="tagcomplete-uuid=${tagcomplete.uuid}" />
+			<arg value="attcomplete-uuid=${attcomplete.uuid}" />
 		</java>
 	</target>
 	
@@ -52,6 +59,8 @@
 				<filter token="BUNDLE_UUID" value="${bundle.uuid}"/>
 				<filter token="SYNTAX_UUID" value="${syntax.uuid}"/>
 				<filter token="CMDDOC_UUID" value="${cmddoc.uuid}"/>
+				<filter token="TAGCOMPLETE_UUID" value="${tagcomplete.uuid}"/>
+				<filter token="ATTRCOMPLETE_UUID" value="${attrcomplete.uuid}"/>
 			</filterset>
 		</copy>
 	</target>
