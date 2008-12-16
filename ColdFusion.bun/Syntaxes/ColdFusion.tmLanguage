@@ -17,12 +17,12 @@
 		
 		<key>foldingStartMarker</key>
 		<string>(?x) 
-(&lt;(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script |ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction)\b.*?&gt; 
+(&lt;(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script |ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction|cfcase|cfdefaultcase)\b.*?&gt; 
         |&lt;!---(?!.*---\s*&gt;) 
         )</string>
 		<key>foldingStopMarker</key>
 		<string>(?x) 
-(&lt;/(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|scrip t|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction)&gt; 
+(&lt;/(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|scrip t|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction|cfcase|cfdefaultcase)&gt; 
         |^(?!.*?&lt;!---).*?---\s*&gt; 
         )</string>
 		
@@ -478,7 +478,7 @@
 					<key>1</key>
 					<dict>
 						<key>name</key>
-						<string>entity.name.tag.cfml</string>
+						<string>entity.name.tag.other.html</string>
 					</dict>
 				</dict>
 				
@@ -486,7 +486,8 @@
 				<string>&gt;</string>
 				
 				<key>name</key>
-				<string>meta.tag.language.cfml.function</string>
+				<!-- <string>meta.tag.language.cfml.function</string> -->
+				<string>meta.tag.other.html</string>
 				
 				<key>patterns</key>
 				<array>
@@ -496,7 +497,8 @@
 							<key>0</key>
 							<dict>
 								<key>name</key>
-								<string>meta.tag.language.cfml.function</string>
+								<!-- <string>meta.tag.language.cfml.function</string> -->
+								<string>entity.other.attribute-name.html</string>
 							</dict>
 							
 							<key>3</key>
@@ -532,28 +534,11 @@
 				</array>
 			</dict>
 			
-			<key>coldfusion-script</key>
-			<dict>
-				<key>begin</key>
-				<string>#</string>
-				<key>end</key>
-				<string>\#</string>
-				<key>name</key>
-				<string>source.coldfusion.embedded.html</string>
-				<key>patterns</key>
-				<array>
-					<dict>
-						<key>include</key>
-						<string>#embedded-code</string>
-					</dict>
-				</array>
-			</dict>
-			
 			<key>embedded-code</key>
 			<dict>
 				<key>patterns</key>
 				<array>
-					<dict>
+					<!-- <dict>
 						<key>include</key>
 						<string>#php</string>
 					</dict>
@@ -568,7 +553,7 @@
 					<dict>
 						<key>include</key>
 						<string>#python</string>
-					</dict>
+					</dict> -->
 					<dict>
 						<key>include</key>
 						<string>#javascript</string>
@@ -637,14 +622,77 @@
 				</array>
 			</dict>
 			
-			<key>tag-generic-attribute</key>
+			<!-- Does function calls. For example, the xmlparse in cfset x=xmlparse() -->
+			<key>inline-function-stuff</key>
 			<dict>
-				<key>match</key>
-				<string>\b([a-zA-Z\-:]+)</string>
+				<key>begin</key>
+				<!-- [^\#"'] -->
+				<string>[a-zA-Z0-9_\.]+\s*\(</string>
+			
+				<key>contentName</key>
+				<string>support.function.parameters</string>
+			
+				<key>end</key>
+				<string>\)</string>
+			
 				<key>name</key>
-				<string>entity.other.attribute-name.html</string>
+				<string>support.function</string>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>include</key>
+						<string>#inline-function-stuff</string>
+					</dict>
+					<dict>
+						<key>include</key>
+						<string>#string-double-quoted</string>
+					</dict>
+					<dict>
+						<key>include</key>
+						<string>#string-single-quoted</string>
+					</dict>
+				</array>
 			</dict>
 			
+			<!-- the stuff between the ## -->
+			<key>coldfusion-script</key>
+			<dict>
+				<key>begin</key>
+				<string>#</string>
+				<key>end</key>
+				<string>\#</string>
+				<key>name</key>
+				<string>source.coldfusion.embedded.html</string>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>include</key>
+						<string>#inline-function-stuff</string>
+					</dict>
+					<dict>
+						<key>include</key>
+						<string>#embedded-code</string>
+					</dict>
+				</array>
+			</dict>
+			
+			
+			<!-- normal attributes -->
+			<key>tag-generic-attribute</key>
+			<dict>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>match</key>
+						<string>\b([a-zA-Z\-:]+)</string>
+				
+						<key>name</key>
+						<string>entity.other.attribute-name.html</string>
+					</dict>
+				</array>
+			</dict>
+			
+			<!-- ID attributes on elements (shows up in the symbol list) -->
 			<key>tag-id-attribute</key>
 			<dict>
 				<key>begin</key>
@@ -708,6 +756,7 @@
 				</array>
 			</dict>
 			
+			<!-- handles all tags -->
 			<key>tag-stuff</key>
 			<dict>
 				<key>patterns</key>
@@ -715,6 +764,10 @@
 					<dict>
 						<key>include</key>
 						<string>#tag-id-attribute</string>
+					</dict>
+					<dict>
+						<key>include</key>
+						<string>#inline-function-stuff</string>
 					</dict>
 					<dict>
 						<key>include</key>
@@ -736,6 +789,7 @@
 						<key>include</key>
 						<string>#embedded-code</string>
 					</dict>
+					
 					<dict>
 						<key>match</key>
 						<string>.var\s</string>
@@ -751,31 +805,6 @@
 						<string>'|"1</string>
 						<key>name</key>
 						<string>meta.tag.other</string>
-					</dict>
-					<dict>
-						<key>begin</key>
-						<string>[^\#"'][a-zA-Z0-9\.]*.\(</string>
-						<key>contentName</key>
-						<string>support.function</string>
-						<key>end</key>
-						<string>\)+</string>
-						<key>name</key>
-						<string>support.function</string>
-						<key>patterns</key>
-						<array>
-							<dict>
-								<key>match</key>
-								<string>("|')[^\.].+("|')</string>
-								<key>name</key>
-								<string>string</string>
-							</dict>
-							<dict>
-								<key>match</key>
-								<string>,</string>
-								<key>name</key>
-								<string>meta.tag</string>
-							</dict>
-						</array>
 					</dict>
 				</array>
 			</dict>
