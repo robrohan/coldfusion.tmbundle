@@ -35,40 +35,8 @@
 		<key>patterns</key>
 		<array>
 			<dict>
-				<key>begin</key>
-				<string>&lt;([a-zA-Z0-9:]+)(?=[^&gt;]*&gt;&lt;/\1&gt;)</string>
-				<key>beginCaptures</key>
-				<dict>
-					<key>1</key>
-					<dict>
-						<key>name</key>
-						<string>entity.name.tag.html</string>
-					</dict>
-				</dict>
-				<key>end</key>
-				<string>&gt;(&lt;)/(\1)&gt;</string>
-				<key>endCaptures</key>
-				<dict>
-					<key>1</key>
-					<dict>
-						<key>name</key>
-						<string>meta.scope.between-tag-pair.html</string>
-					</dict>
-					<key>2</key>
-					<dict>
-						<key>name</key>
-						<string>entity.name.tag.html</string>
-					</dict>
-				</dict>
-				<key>name</key>
-				<string>meta.tag.any.html</string>
-				<key>patterns</key>
-				<array>
-					<dict>
-						<key>include</key>
-						<string>#tag-stuff</string>
-					</dict>
-				</array>
+				<key>include</key>
+				<string>#tag-finder</string>
 			</dict>
 			<dict>
 				<key>begin</key>
@@ -102,29 +70,24 @@
 				</array>
 			</dict>
 			<dict>
-				<key>begin</key>
-				<string>&lt;!---</string>
-				<key>end</key>
-				<string>---\s*&gt;</string>
-				<key>name</key>
-				<string>comment.block.html</string>
-				<key>patterns</key>
-				<array>
-					<dict>
-						<key>match</key>
-						<string>---</string>
-						<key>name</key>
-						<string>invalid.illegal.bad-comments-or-CDATA.html</string>
-					</dict>
-				</array>
+				<key>include</key>
+				<string>#cfcomment</string>
 			</dict>
+			
+			<dict>
+				<key>include</key>
+				<string>#htmlcomment</string>
+			</dict>
+			
 			<dict>
 				<key>begin</key>
 				<string>&lt;!</string>
 				<key>end</key>
 				<string>&gt;</string>
 				<key>name</key>
+				
 				<string>meta.tag.sgml.html</string>
+				
 				<key>patterns</key>
 				<array>
 					<dict>
@@ -160,12 +123,12 @@
 						<key>name</key>
 						<string>constant.other.inline-data.html</string>
 					</dict>
-					<dict>
+					<!--<dict>
 						<key>match</key>
-						<string>(\s*)(?!---|&gt;)\S(\s*)</string>
+						<string>(\s*)(?!-=-=-|&gt;)\S(\s*)</string>
 						<key>name</key>
 						<string>invalid.illegal.bad-comments-or-CDATA.html</string>
-					</dict>
+					</dict> -->
 				</array>
 			</dict>
 			<dict>
@@ -219,6 +182,7 @@
 			<dict>
 				<key>begin</key>
 				<string>(?:^\s+)?&lt;((?i:cfquery))\b(?![^&gt;]*/&gt;)</string>
+				
 				<key>captures</key>
 				<dict>
 					<key>1</key>
@@ -227,12 +191,15 @@
 						<string>entity.name.tag.cfquery.html</string>
 					</dict>
 				</dict>
+				
 				<key>end</key>
 				<string>&lt;/((?i:cfquery))&gt;(?:\s*\n)?</string>
+				
 				<key>name</key>
 				<string>source.sql.embedded.html</string>
 				<key>patterns</key>
 				<array>
+					<!-- this is here to colour the cfquery tag itself-->
 					<dict>
 						<key>include</key>
 						<string>#tag-stuff</string>
@@ -244,10 +211,10 @@
 						<string>(?=&lt;/(?i:cfquery))</string>
 						<key>patterns</key>
 						<array>
-							<dict>
+							<!-- <dict>
 								<key>include</key>
 								<string>#embedded-code</string>
-							</dict>
+							</dict> -->
 							<dict>
 								<key>include</key>
 								<string>source.sql</string>
@@ -468,6 +435,49 @@
 		
 		<key>repository</key>
 		<dict>
+			<key>cfcomment</key>
+			<dict>
+				<key>begin</key>
+				<string>&lt;!---</string>
+				<key>end</key>
+				<string>---\s*&gt;</string>
+				<key>name</key>
+				<!-- <string>comment.block.html</string> -->
+				<string>comment.line</string>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>include</key>
+						<string>#cfcomment</string>
+					</dict>
+					<!-- <dict>
+						<key>match</key>
+						<string>-=-=-</string>
+						<key>name</key>
+						<string>invalid.illegal.bad-comments-or-CDATA.html</string>
+					</dict> -->
+				</array>
+			</dict>
+			
+			<key>htmlcomment</key>
+			<dict>
+				<key>begin</key>
+				<string>&lt;!--</string>
+				<key>end</key>
+				<string>--&gt;</string>
+				<key>name</key>
+				<string>comment.block.html</string>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>match</key>
+						<string>--</string>
+						<key>name</key>
+						<string>invalid.illegal.bad-comments-or-CDATA.html</string>
+					</dict>
+				</array>
+			</dict>
+			
 			<key>cffunction</key>
 			<dict>
 				<key>begin</key>
@@ -486,7 +496,6 @@
 				<string>&gt;</string>
 				
 				<key>name</key>
-				<!-- <string>meta.tag.language.cfml.function</string> -->
 				<string>meta.tag.other.html</string>
 				
 				<key>patterns</key>
@@ -497,7 +506,6 @@
 							<key>0</key>
 							<dict>
 								<key>name</key>
-								<!-- <string>meta.tag.language.cfml.function</string> -->
 								<string>entity.other.attribute-name.html</string>
 							</dict>
 							
@@ -756,7 +764,7 @@
 				</array>
 			</dict>
 			
-			<!-- handles all tags -->
+			<!-- handles all the inner workings of the tags -->
 			<key>tag-stuff</key>
 			<dict>
 				<key>patterns</key>
@@ -805,6 +813,44 @@
 						<string>'|"1</string>
 						<key>name</key>
 						<string>meta.tag.other</string>
+					</dict>
+				</array>
+			</dict>
+		
+			<key>tag-finder</key>
+			<dict>
+				<key>begin</key>
+				<string>&lt;([a-zA-Z0-9:]+)(?=[^&gt;]*&gt;&lt;/\1&gt;)</string>
+				<key>beginCaptures</key>
+				<dict>
+					<key>1</key>
+					<dict>
+						<key>name</key>
+						<string>entity.name.tag.html</string>
+					</dict>
+				</dict>
+				<key>end</key>
+				<string>&gt;(&lt;)/(\1)&gt;</string>
+				<key>endCaptures</key>
+				<dict>
+					<key>1</key>
+					<dict>
+						<key>name</key>
+						<string>meta.scope.between-tag-pair.html</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>name</key>
+						<string>entity.name.tag.html</string>
+					</dict>
+				</dict>
+				<key>name</key>
+				<string>meta.tag.any.html</string>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>include</key>
+						<string>#tag-stuff</string>
 					</dict>
 				</array>
 			</dict>
