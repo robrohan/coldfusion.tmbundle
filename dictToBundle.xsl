@@ -60,6 +60,11 @@
 					<string>59075941-A690-46FC-BFA6-58B81E1B18B0</string>
 					<string>0CA09D51-8DE8-48A0-A178-02D7D8285802</string>
 					<string>1519328F-1308-4DC8-9E71-2B7473F9080F</string>
+					<string>------------------------------------</string>
+					<string>FFDC5F11-5575-4C8C-9CAC-4DFC1163CFEA</string>
+					<string>0DEA11CD-931E-4087-984A-784A2D825EF2</string>
+					<string>7EC225A6-93C8-4A2E-906A-3ADA1FD3C172</string>
+					<string>8D2B412E-56DF-4728-AB74-C1C674277E22</string>
 					<string><xsl:value-of select="$cmddoc-uuid" /></string>
 					<string><xsl:value-of select="$tagcomplete-uuid" /></string>
 					<string><xsl:value-of select="$attcomplete-uuid" /></string>
