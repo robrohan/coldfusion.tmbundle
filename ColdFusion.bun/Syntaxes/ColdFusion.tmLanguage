@@ -73,12 +73,10 @@
 				<key>include</key>
 				<string>#cfcomment</string>
 			</dict>
-			
 			<dict>
 				<key>include</key>
 				<string>#htmlcomment</string>
 			</dict>
-			
 			<dict>
 				<key>begin</key>
 				<string>&lt;!</string>
@@ -142,6 +140,7 @@
 			<dict>
 				<key>begin</key>
 				<string>(?:^\s+)?&lt;((?i:style))\b(?![^&gt;]*/&gt;)</string>
+				
 				<key>captures</key>
 				<dict>
 					<key>1</key>
@@ -150,10 +149,13 @@
 						<string>entity.name.tag.style.html</string>
 					</dict>
 				</dict>
+				
 				<key>end</key>
 				<string>&lt;/((?i:style))&gt;(?:\s*\n)?</string>
+				
 				<key>name</key>
 				<string>source.css.embedded.html</string>
+				
 				<key>patterns</key>
 				<array>
 					<dict>
@@ -163,14 +165,20 @@
 					<dict>
 						<key>begin</key>
 						<string>&gt;</string>
+						
 						<key>end</key>
 						<string>(?=&lt;/(?i:style))</string>
+						
 						<key>patterns</key>
 						<array>
-							<dict>
+							<!-- <dict>
 								<key>include</key>
 								<string>#embedded-code</string>
-							</dict>
+							</dict> -->
+							<!-- <dict>
+									<key>include</key>
+									<string>#tag-finder</string>
+							</dict> -->
 							<dict>
 								<key>include</key>
 								<string>source.css</string>
@@ -188,7 +196,8 @@
 					<key>1</key>
 					<dict>
 						<key>name</key>
-						<string>entity.name.tag.cfquery.html</string>
+						<string>entity.name.tag.script.html</string>
+						<!-- <string>entity.name.tag.cfquery.html</string> -->
 					</dict>
 				</dict>
 				
@@ -197,9 +206,10 @@
 				
 				<key>name</key>
 				<string>source.sql.embedded.html</string>
+				
 				<key>patterns</key>
 				<array>
-					<!-- this is here to colour the cfquery tag itself-->
+					<!-- this is here to colour the cfquery tag's attributes -->
 					<dict>
 						<key>include</key>
 						<string>#tag-stuff</string>
@@ -684,7 +694,6 @@
 				</array>
 			</dict>
 			
-			
 			<!-- normal attributes -->
 			<key>tag-generic-attribute</key>
 			<dict>
@@ -821,6 +830,7 @@
 			<dict>
 				<key>begin</key>
 				<string>&lt;([a-zA-Z0-9:]+)(?=[^&gt;]*&gt;&lt;/\1&gt;)</string>
+				
 				<key>beginCaptures</key>
 				<dict>
 					<key>1</key>
