@@ -645,7 +645,7 @@
 			<dict>
 				<key>begin</key>
 				<!-- [^\#"'] -->
-				<string>[a-zA-Z0-9_\.]+\s*\(</string>
+				<string>[a-zA-Z0-9_\.]+\(</string>
 			
 				<key>contentName</key>
 				<string>support.function.parameters</string>
