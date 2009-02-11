@@ -17,12 +17,12 @@
 		
 		<key>foldingStartMarker</key>
 		<string>(?x) 
-(&lt;(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script |ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction|cfcase|cfdefaultcase)\b.*?&gt; 
+(&lt;(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|script |ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction|cfcase|cfdefaultcase|cfsavecontent)\b.*?&gt; 
         |&lt;!---(?!.*---\s*&gt;) 
         )</string>
 		<key>foldingStopMarker</key>
 		<string>(?x) 
-(&lt;/(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|scrip t|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction|cfcase|cfdefaultcase)&gt; 
+(&lt;/(?i:head|body|table|thead|tbody|tfoot|tr|div|select|fieldset|style|scrip t|ul|ol|form|dl|cfloop|cfif|cfswitch|cfcomponent|cffunction|cfcase|cfdefaultcase|cfsavecontent)&gt; 
         |^(?!.*?&lt;!---).*?---\s*&gt; 
         )</string>
 		
@@ -701,7 +701,7 @@
 				<array>
 					<dict>
 						<key>match</key>
-						<string>\b([a-zA-Z\-:]+)</string>
+						<string>\b([a-zA-Z0-9_\-:]+)</string>
 				
 						<key>name</key>
 						<string>entity.other.attribute-name.html</string>
