@@ -35,6 +35,12 @@
 		<key>patterns</key>
 		<array>
 			<dict>
+				<key>match</key>
+				<string>&lt;(cf|CF)[\W]*&gt;</string>
+				<key>name</key>
+				<string>invalid.illegal.incomplete.html</string>
+			</dict>
+			<dict>
 				<key>include</key>
 				<string>#tag-finder</string>
 			</dict>
@@ -121,12 +127,6 @@
 						<key>name</key>
 						<string>constant.other.inline-data.html</string>
 					</dict>
-					<!--<dict>
-						<key>match</key>
-						<string>(\s*)(?!-=-=-|&gt;)\S(\s*)</string>
-						<key>name</key>
-						<string>invalid.illegal.bad-comments-or-CDATA.html</string>
-					</dict> -->
 				</array>
 			</dict>
 			<dict>

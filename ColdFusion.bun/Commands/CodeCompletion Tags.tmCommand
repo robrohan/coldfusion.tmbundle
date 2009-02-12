@@ -9,10 +9,11 @@
 	<string>@BUNDLE_UUID@</string>
 	
 	<key>command</key>
-	<string>#!/usr/bin/env ruby
-require &quot;#{ENV[&apos;TM_SUPPORT_PATH&apos;]}/lib/codecompletion&quot;
-TextmateCodeCompletion.go!
-</string>
+	<string><![CDATA[#!/usr/bin/env ruby
+		require "#{ENV["TM_SUPPORT_PATH"]}/lib/codecompletion";
+		ENV["TM_COMPLETION_characters"]="/cf/";
+		TextmateCodeCompletion.go!
+	]]></string>
 	
 	<key>fallbackInput</key>
 	<string>line</string>
@@ -31,7 +32,7 @@ TextmateCodeCompletion.go!
 	
 	<key>scope</key>
 	<!-- text.html.cfml invalid.illegal.incomplete.html -->
-	<string>text.html -entity.other.attribute-name -string.quoted, invalid.illegal.incomplete.html</string>
+	<string>text.html text.html.cfml meta.tag.other.html -entity.other.attribute-name -string.quoted, invalid.illegal.incomplete.html</string>
 	
 	<key>uuid</key>
 	<string>@TAGCOMPLETE_UUID@</string>

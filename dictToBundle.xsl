@@ -328,7 +328,7 @@
 							<key>value</key>
 							<string>
 								<xsl:for-each select="//dic:tag">
-									<xsl:value-of select="./@name" /><xsl:text>,</xsl:text>
+									<xsl:value-of select="replace(./@name,'^cf','')" /><xsl:text>,</xsl:text>
 								</xsl:for-each>
 							</string>
 						</dict>
@@ -363,7 +363,7 @@
 					<key>completions</key>
 					<array>
 						<xsl:for-each select="//dic:tag">
-							<string><xsl:value-of select="@name" /></string>
+							<string><xsl:value-of select="./@name" /></string>
 							<string><xsl:value-of select="translate(@name,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" /></string>
 						</xsl:for-each>
 					</array>
