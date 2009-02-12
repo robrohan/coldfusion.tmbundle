@@ -38,7 +38,7 @@
 				<key>match</key>
 				<string>&lt;(cf|CF)[\W]*&gt;</string>
 				<key>name</key>
-				<string>invalid.illegal.incomplete.html</string>
+				<string>invalid.illegal.incomplete.cfml</string>
 			</dict>
 			<dict>
 				<key>include</key>
