@@ -29,8 +29,8 @@ TextmateCodeCompletion.go!</string>
 	<string>insertAsSnippet</string>
 	
 	<key>scope</key>
-	<!-- text.html.cfml meta.tag -->
-	<string>text.html punctuation.definition.tag -source, text.html meta.tag -entity.other.attribute-name -source</string>
+	<!-- <string>text.html punctuation.definition.tag -source, text.html meta.tag -entity.other.attribute-name -source</string> -->
+	<string>meta.tag.other.html -string.quoted.double</string>
 	
 	<key>uuid</key>
 	<string>@ATTRCOMPLETE_UUID@</string>

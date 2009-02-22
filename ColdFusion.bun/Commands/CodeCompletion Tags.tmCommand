@@ -32,7 +32,8 @@
 	
 	<key>scope</key>
 	<!-- text.html.cfml invalid.illegal.incomplete.html -->
-	<string>text.html text.html.cfml meta.tag.other.html -entity.other.attribute-name -string.quoted, invalid.illegal.incomplete.cfml</string>
+	<!-- <string>text.html text.html.cfml meta.tag.other.html -entity.other.attribute-name -string.quoted, invalid.illegal.incomplete.cfml</string> -->
+	<string>text.html invalid.illegal.incomplete.cfml</string>
 	
 	<key>uuid</key>
 	<string>@TAGCOMPLETE_UUID@</string>

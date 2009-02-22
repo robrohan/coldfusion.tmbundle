@@ -60,7 +60,7 @@
 				<filter token="SYNTAX_UUID" value="${syntax.uuid}"/>
 				<filter token="CMDDOC_UUID" value="${cmddoc.uuid}"/>
 				<filter token="TAGCOMPLETE_UUID" value="${tagcomplete.uuid}"/>
-				<filter token="ATTRCOMPLETE_UUID" value="${attrcomplete.uuid}"/>
+				<filter token="ATTRCOMPLETE_UUID" value="${attcomplete.uuid}"/>
 			</filterset>
 		</copy>
 	</target>

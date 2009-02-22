@@ -5,7 +5,7 @@
 	<key>content</key>
 	<string>&lt;cfoutput&gt;${TM_SELECTED_TEXT}$0&lt;/cfoutput&gt;</string>
 	<key>keyEquivalent</key>
-	<string>^O</string>
+	<string>^O,^></string>
 	<key>name</key>
 	<string>output</string>
 	<key>scope</key>
