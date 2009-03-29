@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>name</key>
 	<string>Comments</string>
-	
 	<key>scope</key>
 	<string>text.html.cfm</string>
-	
 	<key>settings</key>
 	<dict>
+		<key>spellChecking</key>
+		<string>1</string>
 		<key>shellVariables</key>
 		<array>
 			<dict>
@@ -26,7 +26,6 @@
 			</dict>
 		</array>
 	</dict>
-	
 	<key>uuid</key>
 	<string>904C79F1-5730-4D8D-986A-0D71587B2C1F</string>
 </dict>

@@ -48,7 +48,7 @@
 			<string>Rob Rohan</string>
 
 			<key>description</key>
-			<string>Support for the ColdFusion web development environment.</string>
+			<string>Support for the CFML web development environment.</string>
 
 			<key>mainMenu</key>
 			<dict>
