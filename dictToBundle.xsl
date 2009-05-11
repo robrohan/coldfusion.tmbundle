@@ -369,7 +369,7 @@
 						</xsl:for-each>
 					</array>
 					<key>disableDefaultCompletion</key>
-					<integer>1</integer>
+					<integer>0</integer>
 					<key>shellVariables</key>
 					<array>
 						<dict>
