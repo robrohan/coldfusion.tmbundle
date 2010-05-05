@@ -1,4 +1,4 @@
-<project name="ColdFusion Textmate Bundle">
+<project name="ColdFusion Textmate Bundle" default="usage">
 	<!-- The xslt process needs an XSLT 2.0 processor, so I am using Saxon-->
 	<property name="saxon.path" value="/Applications/saxonb9-1-0-8j/saxon9.jar" />
 	
@@ -17,6 +17,50 @@
 	<property name="xsl.file" value="dictToBundle.xsl" />
 	<property name="doc.xsl.file" value="dictToAPI.xsl" />
 	<property name="base.bundle" value="ColdFusion.bun" />
+	
+	<!-- ///////////////////////////////////////////////////////////////// -->
+	<target name="usage" description="Basic usage of the ant script. Most useful from the terminal">
+	<echo> ** Coldfusion tmbundle Ant Build Script. **
+
+You probably want: $ant build
+
+===================================================================
+usage..................This
+
+clean..................Cleans up intermediate files, but leaves the
+.......................build directory in tact.
+
+superclean.............Basically just removes the build directory.
+    
+createSnippets.........Creates snippets for all the items in the 
+.......................dictionary.
+
+createAPIDoc...........Creates one big HTML file from the dictionary
+
+createBundle...........Copies all the files into the right structure
+.......................for a textmate bundle.
+    
+build..................Does pretty much all of the above (save the
+.......................clean stuff).
+
+===================================================================
+Other general override properties include, but are not limited to
+	-Doutput.name=""
+	-Ddictionary.file=""
+	-Dbundle.uuid=""
+	-Dsyntax.uuid=""
+	-Dcmddoc.uuid=""
+
+For example, to build a Railo bundle you could do:
+
+ant -Doutput.name=Railo \
+	-Ddictionary.file=Resources/railo1.xml \
+	-Dbundle.uuid=2E937CBE-9B70-42C6-974A-987E8848251E \
+	-Dsyntax.uuid=888FB6E0-4CBC-4521-A51C-3D03AAB85F01 \
+	-Dcmddoc.uuid=632D2425-1F06-4944-9712-7EEA5FE7AE54 \
+	build
+	</echo>
+	</target>
 	
 	<target name="clean">
 		<delete dir="build/${output.bundle}" />
