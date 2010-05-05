@@ -1,10 +1,10 @@
 <project name="ColdFusion Textmate Bundle">
 	<!-- The xslt process needs an XSLT 2.0 processor, so I am using Saxon-->
-	<property name="saxon.path" value="/Applications/saxonb9-0-0-4j/saxon9.jar" />
+	<property name="saxon.path" value="/Applications/saxonb9-1-0-8j/saxon9.jar" />
 	
 	<!-- Probably wont need to change this unless you are going to try to use
 		a different cfeclipse dictionary file. -->
-	<property name="dictionary.file" value="Resources/cfml.xml" />
+	<property name="dictionary.file" value="Resources/cf9.xml" />
 	<property name="output.name" value="ColdFusion" />
 	<property name="output.bundle" value="${output.name}.tmbundle" />
 	

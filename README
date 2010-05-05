@@ -1,0 +1,29 @@
+Authors: 
+        Bill Duenskie
+        Rob Rohan (sponsored by Daemon - http://daemon.com.au)
+
+欢迎
+====
+	大家好！Welcome to the ColdFusion Textmate bundle.  This bit of code will create a Textmate bundle that contains all the tags, functions, and a few basic templates for ColdFusion.
+
+	The input to this process is an XML dictionary file in the cfeclipse dictionary format.  This means that if you happen to have a cfeclipse dictionary, you can use this code to create a compliant Textmate bundle (with a bit of tweaking of course).
+
+Usage
+======
+
+	There are a few things you'll need before you can compile the code.  The first thing you need is Apache Ant (Free).  Ant comes pre-installed on Mac OS 10.5 Leopard, so you should have that already.  Type "ant" in the terminal to see if you have it.  If you do not have it, you'll need to download and set it up before you can compile.
+
+	The second thing you'll need is Saxon 9 (Free).  Saxon 9 is an XSLT 2.0 engine.  You can use another XSLT 2.0 engine, but you'll need to do some tweaking.  After you've downloaded and setup Saxon 9, edit the build.xml file to set the correct path to the Saxon jar file.
+	
+	Once both Ant and Saxon are in place, you can build the build with the following command:
+	
+	$ant build
+	
+	Build will break up the dictionary and create the FarCry.tmbundle.  See the build.xml for more information.
+
+License
+========
+
+Apache License
+Version 2.0, January 2004
+http://www.apache.org/licenses/
